@@ -96,6 +96,9 @@ var onupdate = {
     if (state.content.plantuml) {
       setTimeout(() => puml.render(), 0)
     }
+    if (state.content.map) {
+      setTimeout(() => gmap.render(), 0)
+    }
   }
 }
 
@@ -112,6 +115,10 @@ var update = (update) => {
 
   if (state.content.plantuml) {
     setTimeout(() => puml.render(), 50)
+  }
+
+  if (state.content.map) {
+    setTimeout(() => gmap.render(), 55)
   }
 
   if (state.content.mathjax) {
@@ -140,6 +147,12 @@ var render = (md) => {
       state.html = state.html.replace(
         /<code class="language-(?:plantuml|puml|wsd)">/gi,
         '<code class="plantuml">'
+      )
+    }
+    if (state.content.map) {
+      state.html = state.html.replace(
+        /<code class="language-(?:geojson|map)">/gi,
+        '<code class="geojson">'
       )
     }
     if (state.content.toc) {

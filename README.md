@@ -18,6 +18,7 @@
 - Table of Contents (ToC)
 - MathJax formulas ([mathjax])
 - Mermaid diagrams ([mermaid])
+- Offline maps from `geojson` code blocks
 - PlantUML diagrams ([plantuml])
 - Convert emoji shortnames (icons provided free by [EmojiOne][emojione])
 - Remember scroll position
@@ -115,6 +116,7 @@ Full **CommonMark** support including **GFM** tables and strikethrough **+**
 | :-             | :-:     | :-
 | **autoreload** | `false` | Auto reload on file change
 | **emoji**      | `false` | Convert emoji `:shortnames:` into EmojiOne images
+| **map**        | `false` | Render GeoJSON code blocks as maps
 | **mathjax**    | `false` | Render MathJax formulas
 | **mermaid**    | `false` | Render Mermaid diagrams
 | **plantuml**   | `false` | Render PlantUML diagrams
@@ -134,6 +136,25 @@ Convert emoji :shortnames: into EmojiOne images:
 
 - Emoji shortnames like `:smile:` will be converted to :smile: using EmojiOne images.
 - Currently unicode symbols like `😄` and ASCII emoji like `:D` are not supported.
+
+## Map
+
+Render GeoJSON wrapped in `geojson` or `map` fenced code blocks (the same blocks GitHub renders as maps):
+
+    ```geojson
+    {"type": "FeatureCollection", "features": [
+      {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-3.7038, 40.4168]},
+       "properties": {"title": "Madrid", "marker-symbol": "1"}},
+      {"type": "Feature", "geometry": {"type": "LineString", "coordinates": [[-3.7038, 40.4168], [2.1686, 41.3874]]},
+       "properties": {"stroke": "#e03131", "stroke-dasharray": "6 6"}}
+    ]}
+    ```
+
+- `Point`, `LineString`, `Polygon` and their `Multi*` variants are supported, coordinates are `[longitude, latitude]`
+- the following [simplestyle](https://github.com/mapbox/simplestyle-spec) properties are used: `title` (label and tooltip), `description` (tooltip), `marker-color`, `marker-size` (`small`, `medium`, `large`), `marker-symbol` (text in the marker, up to two characters), `stroke`, `stroke-width`, `stroke-opacity`, `fill` and `fill-opacity`
+- `stroke-dasharray` (for example `6 6`) is an extension for dashed lines
+- the map is fitted to the features, the background is a bundled outline of the countries around the Iberian peninsula (Spain, Portugal, France, Morocco, Algeria, Andorra) from [Natural Earth](https://www.naturalearthdata.com/) - no tiles and no network requests, features outside of this area are drawn on a blank background
+- zoom in and out by holding down the Shift key and then using your mouse wheel, pan by holding down the left mouse button and drag, double click to reset
 
 ## MathJax
 

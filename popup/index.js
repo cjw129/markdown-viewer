@@ -63,6 +63,7 @@ var Popup = () => {
         emoji: 'Convert emoji :shortnames: into EmojiOne images',
         toc: 'Generate Table of Contents',
         mathjax: 'Render MathJax formulas',
+        map: 'Maps from GeoJSON code blocks',
         mermaid: 'Mermaid diagrams',
         plantuml: 'PlantUML diagrams',
         syntax: 'Syntax highlighting for fenced code blocks',

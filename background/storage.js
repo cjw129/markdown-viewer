@@ -50,6 +50,7 @@ md.storage.defaults = (compilers) => {
       autoreload: false,
       emoji: false,
       mathjax: false,
+      map: false,
       mermaid: false,
       plantuml: false,
       syntax: true,
@@ -116,6 +117,9 @@ md.storage.migrations = (state) => {
   }
   if (state.content.mermaid === undefined) {
     state.content.mermaid = false
+  }
+  if (state.content.map === undefined) {
+    state.content.map = false
   }
   if (state.themes === undefined || state.themes instanceof Array) {
     state.themes = {wide: false}

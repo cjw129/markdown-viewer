@@ -335,6 +335,51 @@ pre:has(> code.mermaid) {
   height: 100%;
 }
 
+/*map*/
+pre.geojson-map {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  resize: none !important;
+}
+pre.geojson-map code.geojson {
+  display: block;
+  padding: 0 !important;
+  background: none !important;
+}
+.gmap-view {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgba(128, 128, 128, .35);
+  cursor: grab;
+}
+.gmap-view:active {
+  cursor: grabbing;
+}
+.gmap-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: inherit;
+}
+.gmap-svg text {
+  user-select: none;
+}
+.gmap-hint {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: .6;
+  text-align: right;
+  font-family: sans-serif;
+}
+.gmap-error {
+  color: #c92a2a;
+  font-family: sans-serif;
+  margin-bottom: 6px;
+}
+
 /*plantuml*/
 pre.plantuml-diagram {
   background: none !important;

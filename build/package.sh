@@ -24,6 +24,7 @@ mkdir -p ../vendor
 # build deps
 sh bootstrap/build.sh
 sh csso/build.sh
+sh map/build.sh
 sh markdown-it/build.sh
 sh marked/build.sh
 sh mathjax/build.sh
