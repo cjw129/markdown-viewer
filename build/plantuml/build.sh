@@ -41,6 +41,7 @@ mkdir -p tmp
 
 # copy
 target=../../vendor/plantuml
+rm -rf $target
 mkdir -p $target/vendor
 
 # engine, Firefox also has the unsplit plantuml.js that is over the 5 MB limit
