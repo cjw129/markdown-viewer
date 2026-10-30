@@ -56,6 +56,22 @@ var scroll = (() => {
         }
       }),
       new Promise((resolve) => {
+        var diagrams = Array.from(document.querySelectorAll('code.plantuml'))
+        if (!state.content.plantuml || !diagrams.length) {
+          resolve()
+        }
+        else {
+          // the engine can take a while to load, don't wait forever
+          var give = Date.now() + 3000
+          var timeout = setInterval(() => {
+            if (puml.done(diagrams.length) || Date.now() > give) {
+              clearInterval(timeout)
+              resolve()
+            }
+          }, 50)
+        }
+      }),
+      new Promise((resolve) => {
         if (!state.content.mathjax) {
           resolve()
         }

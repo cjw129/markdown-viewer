@@ -18,6 +18,7 @@
 - Table of Contents (ToC)
 - MathJax formulas ([mathjax])
 - Mermaid diagrams ([mermaid])
+- PlantUML diagrams ([plantuml])
 - Convert emoji shortnames (icons provided free by [EmojiOne][emojione])
 - Remember scroll position
 - Markdown Content-Type detection
@@ -116,6 +117,7 @@ Full **CommonMark** support including **GFM** tables and strikethrough **+**
 | **emoji**      | `false` | Convert emoji `:shortnames:` into EmojiOne images
 | **mathjax**    | `false` | Render MathJax formulas
 | **mermaid**    | `false` | Render Mermaid diagrams
+| **plantuml**   | `false` | Render PlantUML diagrams
 | **syntax**     | **`true`**  | Syntax highlighted fenced code blocks
 | **toc**        | `false` | Generate Table of Contents
 
@@ -164,6 +166,31 @@ Alternatively diagrams can be wrapped in HTML tags:
 - resize the diagram container vertically by dragging the bottom right corner of the code block up or down
 - zoom in and out by holding down the Shift key and then using your mouse wheel
 - pan by holding down the left mouse button and drag in any direction
+
+## PlantUML
+
+Render PlantUML diagrams wrapped in `plantuml`, `puml` or `wsd` fenced code blocks:
+
+    ```plantuml
+    @startuml
+    Alice -> Bob : Hello
+    @enduml
+    ```
+
+The `@startuml` and `@enduml` lines are optional, a block without them is wrapped automatically.
+
+Alternatively diagrams can be wrapped in HTML tags:
+
+```html
+<pre><code class="plantuml">
+  Alice -> Bob : Hello
+</code></pre>
+```
+
+- the diagram is rendered locally by the [PlantUML engine][plantuml-for-github] compiled to JavaScript, no data leaves your browser
+- the standard library is available through `!include <lib/...>`, the Firefox build only includes the libraries under 5 MB (no `awslib14`, `awslib20`, `ibm`, `logos`, `material`, `tupadr3`)
+- diagrams follow the dark/light mode of the selected theme
+- a diagram that fails to render shows the error message in place of the diagram
 
 ## Syntax
 
@@ -378,6 +405,8 @@ SOFTWARE.
   [emojione]: https://emojione.com
   [mathjax]: https://www.mathjax.org
   [mermaid]: https://mermaid.js.org
+  [plantuml]: https://plantuml.com
+  [plantuml-for-github]: https://github.com/plantuml/plantuml-for-github
   [prism]: https://prismjs.com
   [github-theme]: https://github.com/sindresorhus/github-markdown-css
   [cleanrmd]: https://pkg.garrickadenbuie.com/cleanrmd/#themes

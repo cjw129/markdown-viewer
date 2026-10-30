@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PlantUML Renderer</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    body { padding: 8px; font: 13px/1.5 sans-serif; color: #656d76; }
+    html.dark body { color: #8b949e; }
+    #plantuml-output svg { display: block; max-width: 100%; height: auto; }
+    .loading { font-style: italic; }
+    .error {
+      color: #cf222e; background: #ffebe9; border: 1px solid #ffcecb;
+      border-radius: 4px; padding: 8px 12px; white-space: pre-wrap;
+      font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="plantuml-output"><div class="loading">Loading PlantUML engine…</div></div>
+  <!-- the engine is split in 4 chunks to stay under the 5 MB per-file limit of AMO -->
+  <script src="vendor/plantuml.0.js"></script>
+  <script src="vendor/plantuml.1.js"></script>
+  <script src="vendor/plantuml.2.js"></script>
+  <script src="vendor/plantuml.3.js"></script>
+  <script src="common.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

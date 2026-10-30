@@ -1,6 +1,10 @@
 
 # Change Log
 
+## Unreleased
+- PlantUML diagrams (new `plantuml` content option)
+- update mermaid from v10.8.0 to v12.2.0
+
 ## v5.3 - 2024-04-30
 - custom theme support
 - syntax highlighted raw markdown view

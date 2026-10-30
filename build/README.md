@@ -31,6 +31,8 @@ sh build/package.sh
 | prismjs             | 1.29.0
 | csso                | 5.0.5
 | @panzoom/panzoom    | 4.5.1
+| **plantuml**
+| plantuml-for-github | pinned commit in `build/plantuml/build.sh`, override with `PLANTUML_REPO` and `PLANTUML_REF`
 | **markdown-it**
 | markdown-it            | 13.0.1
 | markdown-it-abbr       | 1.0.4

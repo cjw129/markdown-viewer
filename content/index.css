@@ -335,6 +335,24 @@ pre:has(> code.mermaid) {
   height: 100%;
 }
 
+/*plantuml*/
+pre.plantuml-diagram {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  resize: none !important;
+}
+pre.plantuml-diagram iframe {
+  display: block;
+  width: 100%;
+  height: 60px;
+  border: 0;
+  background: transparent;
+  color-scheme: normal;
+}
+
 /*mermaid text bold effect*/
 svg[id^=mermaid] text {
   stroke: none !important;

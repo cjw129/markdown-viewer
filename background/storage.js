@@ -51,6 +51,7 @@ md.storage.defaults = (compilers) => {
       emoji: false,
       mathjax: false,
       mermaid: false,
+      plantuml: false,
       syntax: true,
       toc: false,
     },
@@ -157,6 +158,10 @@ md.storage.migrations = (state) => {
   }
   if (state.content.scroll !== undefined) {
     delete state.content.scroll
+  }
+  // v5.3 -> v5.4
+  if (state.content.plantuml === undefined) {
+    state.content.plantuml = false
   }
   if (state.settings === undefined) {
     state.settings = {

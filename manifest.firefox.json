@@ -66,6 +66,8 @@
         "/icons/light/16x16.png",
         "/themes/*",
         "/vendor/mathjax/fonts/*",
+        "/vendor/plantuml/*",
+        "/vendor/plantuml/vendor/*",
         "/vendor/prism.min.css",
         "/vendor/prism-okaidia.min.css"
       ]
