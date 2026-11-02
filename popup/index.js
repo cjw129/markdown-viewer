@@ -61,6 +61,7 @@ var Popup = () => {
       content: {
         autoreload: 'Auto reload on file change',
         emoji: 'Convert emoji :shortnames: into EmojiOne images',
+        fullscreen: 'Full screen viewer for images and diagrams, with zoom and pan',
         toc: 'Generate Table of Contents',
         mathjax: 'Render MathJax formulas',
         map: 'Maps from GeoJSON code blocks',

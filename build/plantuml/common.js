@@ -5,6 +5,8 @@
 // Protocol (derived from the plantuml-for-github extension):
 //   parent -> PLANTUML_RENDER {requestId, source, options: {dark}}
 //   iframe -> PLANTUML_RESULT {requestId, height} | PLANTUML_ERROR {requestId, error, height}
+//   parent -> PLANTUML_GET_SVG {requestId}
+//   iframe -> PLANTUML_SVG {requestId, svg}
 
 /* exported pumlInit */
 function pumlInit (render) {
@@ -64,10 +66,29 @@ function pumlInit (render) {
     }
   })
 
+  // the rendered diagram as a standalone svg document
+  var serialize = () => {
+    var svg = output.querySelector('svg')
+    if (!svg) {
+      return null
+    }
+    var clone = svg.cloneNode(true)
+    if (!clone.getAttribute('xmlns')) {
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    }
+    return new XMLSerializer().serializeToString(clone)
+  }
+
   window.addEventListener('message', (e) => {
     var data = e.data
-    if (e.source !== window.parent || !data || data.type !== 'PLANTUML_RENDER' ||
-        typeof data.source !== 'string' || typeof data.requestId !== 'string') {
+    if (e.source !== window.parent || !data || typeof data.requestId !== 'string') {
+      return
+    }
+    if (data.type === 'PLANTUML_GET_SVG') {
+      reply({type: 'PLANTUML_SVG', requestId: data.requestId, svg: serialize()})
+      return
+    }
+    if (data.type !== 'PLANTUML_RENDER' || typeof data.source !== 'string') {
       return
     }
     var dark = !!(data.options && data.options.dark)

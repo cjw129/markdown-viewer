@@ -44,6 +44,13 @@ var puml = (() => {
     if (!diagram) {
       return
     }
+    if (data.type === 'PLANTUML_SVG') {
+      if (diagram.onsvg) {
+        diagram.onsvg(typeof data.svg === 'string' ? data.svg : null)
+        diagram.onsvg = null
+      }
+      return
+    }
     if (data.type === 'PLANTUML_RESULT' || data.type === 'PLANTUML_ERROR') {
       diagram.done = true
     }
@@ -93,6 +100,25 @@ var puml = (() => {
         }
       })
     },
+    // the rendered svg, used by the full screen viewer
+    svg: (iframe) => new Promise((resolve, reject) => {
+      var diagram = diagrams.find((diagram) => diagram.iframe === iframe)
+      if (!diagram || !diagram.done) {
+        return reject(new Error('The diagram is not rendered yet'))
+      }
+      var timeout = setTimeout(() => {
+        diagram.onsvg = null
+        reject(new Error('The diagram did not answer'))
+      }, 5000)
+      diagram.onsvg = (svg) => {
+        clearTimeout(timeout)
+        svg ? resolve(svg) : reject(new Error('The diagram has no image'))
+      }
+      iframe.contentWindow.postMessage({
+        type: 'PLANTUML_GET_SVG',
+        requestId: diagram.id,
+      }, firefox ? origin : '*')
+    }),
     done: (count) =>
       started && diagrams.filter((diagram) => diagram.done).length >= count,
   }

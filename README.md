@@ -116,12 +116,22 @@ Full **CommonMark** support including **GFM** tables and strikethrough **+**
 | :-             | :-:     | :-
 | **autoreload** | `false` | Auto reload on file change
 | **emoji**      | `false` | Convert emoji `:shortnames:` into EmojiOne images
+| **fullscreen** | **`true`**  | Full screen viewer for images and diagrams, with zoom and pan
 | **map**        | `false` | Render GeoJSON code blocks as maps
 | **mathjax**    | `false` | Render MathJax formulas
 | **mermaid**    | `false` | Render Mermaid diagrams
 | **plantuml**   | `false` | Render PlantUML diagrams
 | **syntax**     | **`true`**  | Syntax highlighted fenced code blocks
 | **toc**        | `false` | Generate Table of Contents
+
+## Full screen viewer
+
+Hover over an image or a Mermaid, PlantUML or map diagram and click the button in its top right corner to open it in a full screen viewer. Images smaller than 64 x 48 pixels (badges, icons) are skipped.
+
+- zoom with the mouse wheel or the `+` and `-` buttons, `0` or double click fits the content to the window again
+- pan by dragging, or with the arrow keys
+- the full screen button switches the viewer to the browser full screen
+- close with `Esc`, the close button, or a click on the backdrop
 
 ## Autoreload
 

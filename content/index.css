@@ -398,6 +398,132 @@ pre.plantuml-diagram iframe {
   color-scheme: normal;
 }
 
+/*full screen viewer*/
+#_viewer-open {
+  all: unset;
+  position: fixed;
+  z-index: 2147483000;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: 6px;
+  background: rgba(30, 33, 38, .72);
+  color: #fff;
+  cursor: pointer;
+  opacity: .85;
+}
+#_viewer-open:hover,
+#_viewer-open:focus-visible {
+  background: rgba(30, 33, 38, .95);
+  opacity: 1;
+}
+#_viewer-open svg,
+#_viewer-bar svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#_viewer {
+  all: initial;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483001;
+  display: block;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #fff;
+}
+#_viewer * {
+  box-sizing: border-box;
+}
+#_viewer._viewer-light {
+  background: rgba(17, 19, 23, .98);
+}
+#_viewer._viewer-dark {
+  background: #000;
+}
+#_viewer-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+#_viewer-stage:active {
+  cursor: grabbing;
+}
+#_viewer-panel {
+  flex: none;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, .5);
+}
+#_viewer._viewer-light #_viewer-panel {
+  background: #fff;
+}
+#_viewer._viewer-dark #_viewer-panel {
+  background: #0d1117;
+}
+#_viewer-panel > img,
+#_viewer-panel > svg {
+  display: block;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+}
+#_viewer-bar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background: rgba(40, 44, 52, .9);
+}
+#_viewer-zoom {
+  min-width: 52px;
+  padding: 0 8px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: #c9d1d9;
+}
+#_viewer-bar button {
+  all: unset;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  padding: 7px;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+}
+#_viewer-bar button:hover,
+#_viewer-bar button:focus-visible {
+  background: rgba(255, 255, 255, .18);
+}
+#_viewer-message {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #c9d1d9;
+}
+
 /*mermaid text bold effect*/
 svg[id^=mermaid] text {
   stroke: none !important;

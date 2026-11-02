@@ -2,6 +2,7 @@
 # Change Log
 
 ## Unreleased
+- full screen viewer with zoom and pan for images and diagrams (new `fullscreen` content option)
 - PlantUML diagrams (new `plantuml` content option)
 - maps from `geojson` code blocks with an offline basemap (new `map` content option)
 - update mermaid from v10.8.0 to v12.2.0

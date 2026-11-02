@@ -49,6 +49,7 @@ md.storage.defaults = (compilers) => {
     content: {
       autoreload: false,
       emoji: false,
+      fullscreen: true,
       mathjax: false,
       map: false,
       mermaid: false,
@@ -166,6 +167,9 @@ md.storage.migrations = (state) => {
   // v5.3 -> v5.4
   if (state.content.plantuml === undefined) {
     state.content.plantuml = false
+  }
+  if (state.content.fullscreen === undefined) {
+    state.content.fullscreen = true
   }
   if (state.settings === undefined) {
     state.settings = {

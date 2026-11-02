@@ -117,6 +117,10 @@ var update = (update) => {
     setTimeout(() => puml.render(), 50)
   }
 
+  if (state.content.fullscreen) {
+    viewer.init()
+  }
+
   if (state.content.map) {
     setTimeout(() => gmap.render(), 55)
   }
