@@ -46,6 +46,10 @@ md.storage.defaults = (compilers) => {
     themes: {
       width: 'auto',
     },
+    maps: {
+      // offline: bundled basemap only, online: map tiles only, both: offline basemap with tiles when zoomed in
+      source: 'both',
+    },
     content: {
       autoreload: false,
       emoji: false,
@@ -170,6 +174,9 @@ md.storage.migrations = (state) => {
   }
   if (state.content.fullscreen === undefined) {
     state.content.fullscreen = true
+  }
+  if (state.maps === undefined) {
+    state.maps = {source: 'both'}
   }
   if (state.settings === undefined) {
     state.settings = {

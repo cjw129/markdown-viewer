@@ -5,6 +5,8 @@
 - full screen viewer with zoom and pan for images and diagrams (new `fullscreen` content option)
 - PlantUML diagrams (new `plantuml` content option)
 - maps from `geojson` code blocks with an offline basemap (new `map` content option)
+- maps zoom up to 200x with the mouse wheel, markers, labels and line widths keep their size while zooming
+- maps: cities, main roads and railroads in the offline basemap, optional online tiles (Esri) (`maps` source: offline, online, both)
 - update mermaid from v10.8.0 to v12.2.0
 
 ## v5.3 - 2024-04-30

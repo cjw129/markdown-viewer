@@ -64,6 +64,11 @@ md.messages = ({storage: {defaults, state, set}, compilers, mathjax, xhr, webreq
       notifyContent({message: 'raw', raw: req.raw})
       sendResponse()
     }
+    else if (req.message === 'popup.maps') {
+      set({maps: req.maps})
+      notifyContent({message: 'maps', maps: req.maps})
+      sendResponse()
+    }
     else if (req.message === 'popup.themes') {
       set({themes: req.themes})
       notifyContent({message: 'themes', themes: req.themes})

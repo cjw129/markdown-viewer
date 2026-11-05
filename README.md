@@ -18,7 +18,7 @@
 - Table of Contents (ToC)
 - MathJax formulas ([mathjax])
 - Mermaid diagrams ([mermaid])
-- Offline maps from `geojson` code blocks
+- Maps from `geojson` code blocks, offline basemap with optional online tiles
 - PlantUML diagrams ([plantuml])
 - Convert emoji shortnames (icons provided free by [EmojiOne][emojione])
 - Remember scroll position
@@ -163,8 +163,13 @@ Render GeoJSON wrapped in `geojson` or `map` fenced code blocks (the same blocks
 - `Point`, `LineString`, `Polygon` and their `Multi*` variants are supported, coordinates are `[longitude, latitude]`
 - the following [simplestyle](https://github.com/mapbox/simplestyle-spec) properties are used: `title` (label and tooltip), `description` (tooltip), `marker-color`, `marker-size` (`small`, `medium`, `large`), `marker-symbol` (text in the marker, up to two characters), `stroke`, `stroke-width`, `stroke-opacity`, `fill` and `fill-opacity`
 - `stroke-dasharray` (for example `6 6`) is an extension for dashed lines
-- the map is fitted to the features, the background is a bundled outline of the countries around the Iberian peninsula (Spain, Portugal, France, Morocco, Algeria, Andorra) from [Natural Earth](https://www.naturalearthdata.com/) - no tiles and no network requests, features outside of this area are drawn on a blank background
-- zoom in and out by holding down the Shift key and then using your mouse wheel, pan by holding down the left mouse button and drag, double click to reset
+- the map is fitted to the features
+- the map source is selected in the popup (`maps`):
+  - `offline` - a bundled basemap around the Iberian peninsula (countries, main roads, railroads and cities, from [Natural Earth](https://www.naturalearthdata.com/)), no network requests, features outside of this area are drawn on a blank background
+  - `online` - [Esri](https://www.arcgis.com/home/item.html?id=3b93337983e9436f8db950e38a8629af) World Street Map raster tiles (OpenStreetMap and other data, World Dark Gray for the dark themes) at every zoom level, the tiles are requested from `server.arcgisonline.com` by the page, the bundled basemap is the fallback when they can not be loaded
+  - `both` (default) - the offline basemap, the tiles take over once you zoom in far enough
+- pages that block third party images (for example with a Content Security Policy) keep the offline basemap. The OpenStreetMap tile servers are not used because they block requests that carry no Referer, like the ones from `file://` pages
+- zoom in and out with the mouse wheel (up to 200x), pan by holding down the left mouse button and drag, double click to reset. Markers, labels and lines keep their size while zooming, the full screen viewer works the same way
 
 ## MathJax
 

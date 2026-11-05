@@ -6,6 +6,7 @@ var state = {
   raw: args.raw,
   themes: args.themes,
   content: args.content,
+  maps: args.maps,
   compiler: args.compiler,
   custom: args.custom,
   icon: args.icon,
@@ -65,6 +66,12 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   else if (req.message === 'themes') {
     state.themes = req.themes
     m.redraw()
+  }
+  else if (req.message === 'maps') {
+    state.maps = req.maps
+    if (state.content.map) {
+      gmap.render()
+    }
   }
   else if (req.message === 'raw') {
     state.raw = req.raw

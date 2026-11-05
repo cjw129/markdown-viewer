@@ -114,7 +114,13 @@ var viewer = (() => {
       return puml.svg(target.iframe).then((svg) =>
         fromImage('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)))
     }
-    return fromSvg(target.svg)
+    return fromSvg(target.svg).then((result) => {
+      // the inline map may be zoomed already, the copy starts from the fit
+      if (target.kind === 'map') {
+        gmap.fixed(result.node, 1)
+      }
+      return result
+    })
   }
 
   var close = () => {
@@ -154,7 +160,8 @@ var viewer = (() => {
           : '') +
         `<button type="button" data-action="close" title="Close (Esc)" aria-label="Close">${icons.close}</button>` +
       '</div>' +
-      '<div id="_viewer-message"></div>'
+      '<div id="_viewer-message"></div>' +
+      '<div id="_viewer-credit"></div>'
     document.documentElement.appendChild(overlay)
     var overflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
@@ -162,6 +169,7 @@ var viewer = (() => {
     var stage = overlay.querySelector('#_viewer-stage')
     var message = overlay.querySelector('#_viewer-message')
     var label = overlay.querySelector('#_viewer-zoom')
+    var credit = overlay.querySelector('#_viewer-credit')
     var panel = null
     var panzoom = null
     var natural = null
@@ -250,9 +258,12 @@ var viewer = (() => {
       panel.appendChild(natural.node)
       stage.appendChild(panel)
 
-      panzoom = Panzoom(panel, {canvas: true, maxScale: 40, minScale: 0.2, step: 0.4})
+      panzoom = Panzoom(panel, {canvas: true, maxScale: target.kind === 'map' ? 200 : 40, minScale: 0.2, step: 0.4})
       panel.addEventListener('panzoomchange', (e) => {
         label.textContent = Math.round(e.detail.scale * 100) + '%'
+        if (target.kind === 'map') {
+          gmap.adapt(natural.node, stage, e.detail.scale, credit)
+        }
       })
       stage.addEventListener('wheel', (e) => {
         e.preventDefault()
@@ -270,6 +281,9 @@ var viewer = (() => {
         down = null
       })
       fit()
+      if (target.kind === 'map') {
+        gmap.adapt(natural.node, stage, 1, credit)
+      }
     }).catch((err) => {
       message.textContent = err.message
     })

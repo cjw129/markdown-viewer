@@ -1,9 +1,11 @@
 // Builds a small offline basemap (country polygons around Iberia) from Natural Earth data.
-// usage: node basemap.js <ne_10m_admin_0_countries.geojson> <out.js>
+// usage: node basemap.js <ne_10m_admin_0_countries.geojson> <out.js> [places.geojson roads.geojson railroads.geojson]
 var fs = require('fs')
 
 var BBOX = [-12, 33.5, 8.5, 47] // west, south, east, north
 var TOLERANCE = 0.006           // degrees, Douglas-Peucker
+var LINE_TOLERANCE = 0.012      // degrees, roads and railroads
+var ROADS = ['Major Highway', 'Secondary Highway']
 var COUNTRIES = {
   ESP: ['ES', '스페인'],
   PRT: ['PT', '포르투갈'],
@@ -87,6 +89,45 @@ geo.features.forEach((f) => {
   if (rings.length) countries.push({id: COUNTRIES[code][0], name: COUNTRIES[code][1], rings})
 })
 
+var round = (p) => [Math.round(p[0] * 1000) / 1000, Math.round(p[1] * 1000) / 1000]
+var inside = (p) => p[0] >= BBOX[0] && p[0] <= BBOX[2] && p[1] >= BBOX[1] && p[1] <= BBOX[3]
+
+// keep the runs of a line that are inside the bbox
+function lines (geometry) {
+  var parts = geometry.type === 'LineString' ? [geometry.coordinates] : geometry.coordinates
+  var out = []
+  parts.forEach((part) => {
+    var run = []
+    var flush = () => {
+      if (run.length > 1) {
+        var simple = simplify(run, LINE_TOLERANCE)
+        if (simple.length > 1) out.push(simple.map(round))
+      }
+      run = []
+    }
+    part.forEach((p) => inside(p) ? run.push([p[0], p[1]]) : flush())
+    flush()
+  })
+  return out
+}
+
+function read (file, filter) {
+  return file ? JSON.parse(fs.readFileSync(file, 'utf8')).features.filter(filter) : []
+}
+
+var places = read(process.argv[4], (f) => inside(f.geometry.coordinates))
+  .sort((a, b) => b.properties.POP_MAX - a.properties.POP_MAX)
+  .map((f) => ({
+    n: f.properties.NAME_KO || f.properties.NAME,
+    at: round(f.geometry.coordinates),
+    p: f.properties.POP_MAX,
+    c: f.properties.ADM0CAP ? 1 : 0,
+  }))
+var roads = read(process.argv[5], (f) => ROADS.includes(f.properties.type))
+  .flatMap((f) => lines(f.geometry))
+var rails = read(process.argv[6], () => true)
+  .flatMap((f) => lines(f.geometry))
+
 var data = {
   attribution: 'Map data: Natural Earth (public domain)',
   bbox: BBOX,
@@ -94,7 +135,11 @@ var data = {
     id, name: COUNTRIES[Object.keys(COUNTRIES).find((c) => COUNTRIES[c][0] === id)][1], at: LABELS[id]
   })),
   countries,
+  places,
+  roads,
+  rails,
 }
 fs.writeFileSync(process.argv[3], 'var MAP_BASE = ' + JSON.stringify(data) + '\n')
+console.log('places', places.length, 'roads', roads.length, 'rails', rails.length)
 console.log('map-basemap.js', fs.statSync(process.argv[3]).size, 'bytes,',
   countries.map((c) => c.id + ':' + c.rings.reduce((n, r) => n + r.length, 0)).join(' '))

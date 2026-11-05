@@ -524,6 +524,19 @@ pre.plantuml-diagram iframe {
   color: #c9d1d9;
 }
 
+#_viewer-credit {
+  position: absolute;
+  left: 12px;
+  bottom: 8px;
+  font: 11px sans-serif;
+  color: #c9d1d9;
+  opacity: .8;
+  pointer-events: none;
+}
+.gmap-tiled .gmap-city {
+  display: none;
+}
+
 /*mermaid text bold effect*/
 svg[id^=mermaid] text {
   stroke: none !important;

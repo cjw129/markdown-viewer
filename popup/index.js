@@ -51,6 +51,12 @@ var Popup = () => {
       'small',
       'tiny',
     ],
+    _maps: {
+      offline: 'Offline basemap only',
+      online: 'Online map tiles only',
+      both: 'Offline basemap, online tiles when zoomed in',
+    },
+    maps: {source: 'both'},
     raw: false,
     tab: '',
     tabs: ['theme', 'compiler', 'content'],
@@ -108,6 +114,14 @@ var Popup = () => {
       })
     },
 
+    maps: (e) => {
+      state.maps.source = Object.keys(state._maps)[e.target.selectedIndex]
+      chrome.runtime.sendMessage({
+        message: 'popup.maps',
+        maps: state.maps,
+      })
+    },
+
     themes: (e) => {
       state.themes.width = state._width[e.target.selectedIndex]
       chrome.runtime.sendMessage({
@@ -153,6 +167,7 @@ var Popup = () => {
     state.content = res.content
     state.theme = res.theme
     state.themes = res.themes
+    state.maps = res.maps || state.maps
 
     state.raw = res.raw
     state.tab = localStorage.getItem('tab') || 'theme'
@@ -295,6 +310,17 @@ var Popup = () => {
               m('.mdc-switch__background', m('.mdc-switch__knob')),
               m('span.mdc-switch-label', key)
             ))
+          ),
+          m('select.mdc-elevation--z2 m-select', {
+            onchange: events.maps,
+            title: 'Map source for GeoJSON maps'
+            },
+            Object.keys(state._maps).map((source) =>
+              m('option', {
+                value: source,
+                selected: state.maps.source === source,
+              }, 'maps: ' + state._maps[source])
+            )
           )
         )
       ),
@@ -407,7 +433,18 @@ var Popup = () => {
               m('.mdc-switch__background', m('.mdc-switch__knob')),
               m('span.mdc-switch-label', key)
             ))
-          )
+          ),
+            m('select.mdc-elevation--z2 m-select', {
+              onchange: events.maps,
+              title: 'Map source for GeoJSON maps'
+              },
+              Object.keys(state._maps).map((source) =>
+                m('option', {
+                  value: source,
+                  selected: state.maps.source === source,
+                }, 'maps: ' + state._maps[source])
+              )
+            )
         ),
       ),
     )

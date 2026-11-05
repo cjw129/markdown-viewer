@@ -10,5 +10,12 @@ if [ ! -f tmp/ne_10m_admin_0_countries.geojson ]; then
     https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries.geojson
 fi
 
+for name in populated_places roads railroads; do
+  if [ ! -f tmp/ne_10m_$name.geojson ]; then
+    curl -sSL -o tmp/ne_10m_$name.geojson       https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_$name.geojson
+  fi
+done
+
 # build: clip + simplify to a small offline basemap -> vendor/map-basemap.js
-node basemap.js tmp/ne_10m_admin_0_countries.geojson ../../vendor/map-basemap.js
+node basemap.js tmp/ne_10m_admin_0_countries.geojson ../../vendor/map-basemap.js \
+  tmp/ne_10m_populated_places.geojson tmp/ne_10m_roads.geojson tmp/ne_10m_railroads.geojson
