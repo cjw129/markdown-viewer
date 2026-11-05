@@ -8,6 +8,7 @@
 //   stroke-dasharray (extension), fill, fill-opacity
 var gmap = (() => {
   var W = 900
+  var clips = 0
 
   var palette = {
     light: {sea: '#dbe8f3', land: '#f3efe6', border: '#b9b2a2', label: '#7b7568', text: '#2b2b2b', halo: '#ffffff', marker: '#e8590c', road: '#e0a458', rail: '#8d8778', city: '#5c564a'},
@@ -123,6 +124,17 @@ var gmap = (() => {
     out.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${view.W} ${view.H}" class="gmap-svg" role="img" data-w="${view.W}" data-h="${view.H}" data-x0="${view.x0}" data-y1="${view.y1}" data-scale="${view.scale}" data-dark="${dark() ? 1 : 0}" data-attribution="${esc(base.attribution || '')}">`)
     out.push(`<rect width="${view.W}" height="${view.H}" fill="${colors.sea}"/>`)
 
+    // low resolution world below the detailed area, the bbox is cut out so the borders do not double
+    if ((base.world || []).length) {
+      var box = base.bbox ? [proj([base.bbox[0], base.bbox[3]]), proj([base.bbox[2], base.bbox[1]])] : null
+      var cid = 'gmap-world-' + (clips++)
+      var cut = box ? `M${box[0][0]} ${box[0][1]}H${box[1][0]}V${box[1][1]}H${box[0][0]}Z` : ''
+      out.push(`<clipPath id="${cid}"><path clip-rule="evenodd" d="M-1e6 -1e6H1e6V1e6H-1e6Z${cut}"/></clipPath><g clip-path="url(#${cid})">`)
+      base.world.forEach((country) => {
+        out.push(`<path class="gmap-stroke" data-sw="0.8" d="${path(country.rings, proj, true)}" fill="${colors.land}" stroke="${colors.border}" stroke-width="0.8" stroke-linejoin="round"><title>${esc(country.name)}</title></path>`)
+      })
+      out.push('</g>')
+    }
     base.countries.forEach((country) => {
       out.push(`<path class="gmap-stroke" data-sw="1" d="${path(country.rings, proj, true)}" fill="${colors.land}" stroke="${colors.border}" stroke-width="1" stroke-linejoin="round"><title>${esc(country.name)}</title></path>`)
     })

@@ -1,5 +1,5 @@
 // Builds a small offline basemap (country polygons around Iberia) from Natural Earth data.
-// usage: node basemap.js <ne_10m_admin_0_countries.geojson> <out.js> [places.geojson roads.geojson railroads.geojson]
+// usage: node basemap.js <ne_10m_admin_0_countries.geojson> <out.js> [places.geojson roads.geojson railroads.geojson ne_110m_admin_0_countries.geojson]
 var fs = require('fs')
 
 var BBOX = [-12, 33.5, 8.5, 47] // west, south, east, north
@@ -128,6 +128,20 @@ var roads = read(process.argv[5], (f) => ROADS.includes(f.properties.type))
 var rails = read(process.argv[6], () => true)
   .flatMap((f) => lines(f.geometry))
 
+// low resolution countries of the whole world, drawn outside of the detailed bbox
+var WORLD_TOLERANCE = 0.08 // degrees
+var world = read(process.argv[7], (f) => f.properties.ADM0_A3 !== 'ATA' && f.properties.ISO_A3 !== 'ATA')
+  .map((f) => {
+    var polys = f.geometry.type === 'Polygon' ? [f.geometry.coordinates] : f.geometry.coordinates
+    var rings = []
+    polys.forEach((poly) => {
+      var ring = simplify(poly[0].map((p) => [p[0], Math.max(-80, Math.min(84, p[1]))]), WORLD_TOLERANCE)
+      if (ring.length >= 4) rings.push(ring.map(round))
+    })
+    return {name: f.properties.NAME_KO || f.properties.NAME, rings}
+  })
+  .filter((c) => c.rings.length)
+
 var data = {
   attribution: 'Map data: Natural Earth (public domain)',
   bbox: BBOX,
@@ -135,11 +149,12 @@ var data = {
     id, name: COUNTRIES[Object.keys(COUNTRIES).find((c) => COUNTRIES[c][0] === id)][1], at: LABELS[id]
   })),
   countries,
+  world,
   places,
   roads,
   rails,
 }
 fs.writeFileSync(process.argv[3], 'var MAP_BASE = ' + JSON.stringify(data) + '\n')
-console.log('places', places.length, 'roads', roads.length, 'rails', rails.length)
+console.log('world', world.length, 'places', places.length, 'roads', roads.length, 'rails', rails.length)
 console.log('map-basemap.js', fs.statSync(process.argv[3]).size, 'bytes,',
   countries.map((c) => c.id + ':' + c.rings.reduce((n, r) => n + r.length, 0)).join(' '))
