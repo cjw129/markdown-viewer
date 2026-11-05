@@ -450,9 +450,6 @@ pre.plantuml-diagram iframe {
 #_viewer-stage {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   cursor: grab;
   touch-action: none;
@@ -462,7 +459,9 @@ pre.plantuml-diagram iframe {
   cursor: grabbing;
 }
 #_viewer-panel {
-  flex: none;
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: 16px;
   border-radius: 8px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, .5);

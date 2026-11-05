@@ -186,6 +186,12 @@ var viewer = (() => {
       panel.style.height = (natural.h * scale + pad * 2) + 'px'
       natural.node.style.width = (natural.w * scale) + 'px'
       natural.node.style.height = (natural.h * scale) + 'px'
+      // the panel sits at the origin of the stage, that is where panzoom measures the
+      // mouse position from, so it is centered with the start pan instead of the layout
+      panzoom.setOptions({
+        startX: (stage.clientWidth - panel.offsetWidth) / 2,
+        startY: (stage.clientHeight - panel.offsetHeight) / 2,
+      })
       panzoom.reset({animate: false})
     }
 
