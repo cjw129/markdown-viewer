@@ -13,7 +13,7 @@ sh build/package.sh
 
 ## Build Dependencies
 
-- node >= 18
+- node >= 18 (tested with Node 20, Node 24 produced a broken build)
 - npm >= 10
 - git
 - zip
