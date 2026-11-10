@@ -12,7 +12,10 @@ npx rollup --config rollup.mjs --input mdc.mjs --file tmp/mdc.js
 npx terser --compress --mangle -- tmp/mdc.js > tmp/mdc.min.js
 
 # mdc.min.css
-npx node-sass --include-path node_modules/ mdc.scss tmp/mdc.css
+# Dart Sass (pure JavaScript), node-sass compiles libsass for every new Node
+# release and is no longer supported. MDC 0.37 is written with @import, which
+# Sass deprecates: silenced here, the pinned version keeps it working.
+npx sass --load-path=node_modules --no-source-map --quiet-deps --silence-deprecation=import mdc.scss tmp/mdc.css
 npx csso --input tmp/mdc.css --output tmp/mdc.min.css
 
 # copy

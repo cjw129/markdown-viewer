@@ -13,7 +13,7 @@ sh build/package.sh
 
 ## Build Dependencies
 
-- node >= 18 (tested with Node 20, Node 24 produced a broken build)
+- node >= 18, use a supported release: the build is verified on Linux with Node 22, 24 (LTS) and 26 (latest), Node 20 and older are end of life (`.nvmrc` selects the current LTS)
 - npm >= 10
 - git
 - zip
@@ -64,3 +64,4 @@ sh build/package.sh
 | @material/switch    | 0.36.1
 | @material/tabs      | 0.37.1
 | @material/textfield | 0.37.1
+| sass                | 1.108.1
